@@ -53,9 +53,11 @@
 
 ### Пример работы ботов
 - Telegram:
-![tg_bot](C:\Users\abram\PycharmProjects\dvmnDialog0.8\tg-bot.gif)
+  
+![tg_bot](https://github.com/Velial72/dvmnDialog0.8/blob/main/tg-bot.gif)
 - VK:
-![vk_bot](C:\Users\abram\PycharmProjects\dvmnDialog0.8\vk_bot.gif)
+  
+![vk_bot](https://github.com/Velial72/dvmnDialog0.8/blob/main/vk_bot.gif)
 
 ### Цель проекта
 
