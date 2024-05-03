@@ -8,17 +8,20 @@ from dialog import detect_intent_text
 from logs import LogHandler
 
 
-if __name__ == '__main__':
+logger = logging.getLogger('Logger')
+
+
+def main():
     env = Env()
     env.read_env()
 
     BOT_TOKEN = env('BOT_TOKEN')
     bot = telebot.TeleBot(token=BOT_TOKEN)
-
-    logging.basicConfig(
-        handlers=[LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))]
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(
+        LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))
     )
-    logging.warning("TG_bot запущен")
+    logger.warning("TG_bot запущен")
 
 
     @bot.message_handler(commands=['start'])
@@ -46,3 +49,7 @@ if __name__ == '__main__':
         except requests.exceptions.ConnectionError:
             logging.exception("TG_bot упал с ошибкой")
             sleep(120)
+
+
+if __name__ == '__main__':
+    main()
