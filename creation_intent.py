@@ -28,8 +28,8 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
     )
 
 
-with open("questions.json", "r", encoding="utf-8") as my_file:
-    questions_json = my_file.read()
+with open("questions.json", "r", encoding="utf-8") as file:
+    questions_json = file.read()
 questions = json.loads(questions_json)
 
 for theme, question in questions.items():
