@@ -8,40 +8,36 @@ from dialog import detect_intent_text
 from logs import LogHandler
 
 
-env = Env()
-env.read_env()
+if __name__ == '__main__':
+    env = Env()
+    env.read_env()
 
-BOT_TOKEN = env('BOT_TOKEN')
+    BOT_TOKEN = env('BOT_TOKEN')
+    bot = telebot.TeleBot(token=BOT_TOKEN)
 
-bot = telebot.TeleBot(token=BOT_TOKEN)
-
-logging.basicConfig(
+    logging.basicConfig(
         handlers=[LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))]
     )
-logging.warning("TG_bot запущен")
+    logging.warning("TG_bot запущен")
 
 
-@bot.message_handler(commands=['start'])
-def process_start_command(message):
-    bot.send_message(chat_id=message.chat.id, text='Zzz...')
+    @bot.message_handler(commands=['start'])
+    def process_start_command(message):
+        bot.send_message(chat_id=message.chat.id, text='Zzz...')
 
 
-@bot.message_handler(commands=['help'])
-def process_help_command(message):
-    bot.send_message(chat_id=message.chat.id,
-                     text='Напиши мне что-нибудь и в ответ '
-                          'я пришлю тебе твое сообщение'
-                     )
+    @bot.message_handler(commands=['help'])
+    def process_help_command(message):
+        bot.send_message(chat_id=message.chat.id,
+                         text='Напиши мне что-нибудь и в ответ я пришлю тебе твое сообщение'
+                        )
 
 
-@bot.message_handler(content_types=['text'])
-def send_answer(message):
-    serialized_answer = detect_intent_text(env('DIALOG_ID'), message.from_user.id, message.text, flag=False)
-    if serialized_answer is not None:
-        bot.send_message(chat_id=message.chat.id, text=serialized_answer['answer'])
-
-
-if __name__ == '__main__':
+    @bot.message_handler(content_types=['text'])
+    def send_answer(message):
+        serialized_answer = detect_intent_text(env('DIALOG_ID'), message.from_user.id, message.text, flag=False)
+        if serialized_answer is not None:
+            bot.send_message(chat_id=message.chat.id, text=serialized_answer['answer'])
     while True:
         try:
             bot.polling()
