@@ -1,11 +1,15 @@
 import json
 from google.cloud import dialogflow
+from environs import Env
 
 
 if __name__ == '__main__':
+    env = Env()
+    env.read_env()
+
     def create_intent(project_id, display_name, training_phrases_parts, message_texts):
         """Create an intent of the given intent type."""
-    
+        
         intents_client = dialogflow.IntentsClient()
     
         parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -36,4 +40,4 @@ if __name__ == '__main__':
     for theme, question in questions.items():
         some_question = question['questions']
         some_answer = question['answer']
-        create_intent('dvmn-bot-ynkq', theme, some_question, some_answer)
+        create_intent(env('DIALOG_ID'), theme, some_question, some_answer)
