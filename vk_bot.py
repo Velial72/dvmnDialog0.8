@@ -11,17 +11,6 @@ from logs import LogHandler
 from dialog import detect_intent_text
 
 
-env = Env()
-env.read_env()
-
-VK_TOKEN = env('VK_TOKEN')
-
-logging.basicConfig(
-        handlers=[LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))]
-    )
-logging.warning("VK_bot запущен")
-
-
 def send_answer(answer, user_id, vk_api):
     vk_api.messages.send(
         user_id=user_id,
@@ -31,6 +20,12 @@ def send_answer(answer, user_id, vk_api):
 
 
 if __name__ == "__main__":
+    env = Env()
+    env.read_env()
+    logging.basicConfig(
+        handlers=[LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))]
+    )
+    logging.warning("VK_bot запущен")
     VK_TOKEN = env('VK_TOKEN')
     vk_session = vk.VkApi(token=VK_TOKEN)
     vk_api = vk_session.get_api()
