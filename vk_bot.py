@@ -1,6 +1,7 @@
 import random
 import requests.exceptions
 import logging
+import telebot
 from time import sleep
 import vk_api as vk
 from vk_api.longpoll import VkLongPoll, VkEventType
@@ -11,6 +12,9 @@ from logs import LogHandler
 from dialog import detect_intent_text
 
 
+logger = logging.getLogger('Logger')
+
+
 def send_answer(answer, user_id, vk_api):
     vk_api.messages.send(
         user_id=user_id,
@@ -19,13 +23,17 @@ def send_answer(answer, user_id, vk_api):
     )
 
 
-if __name__ == "__main__":
+def main():
     env = Env()
     env.read_env()
-    logging.basicConfig(
-        handlers=[LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))]
+    
+    BOT_TOKEN = env('BOT_TOKEN')
+    bot = telebot.TeleBot(token=BOT_TOKEN)
+    logger.setLevel(logging.WARNING)
+    logger.addHandler(
+        LogHandler(tg_bot=bot, chat_id=env('CHAT_ID'))
     )
-    logging.warning("VK_bot запущен")
+    logger.warning("VK_bot запущен")
     VK_TOKEN = env('VK_TOKEN')
     vk_session = vk.VkApi(token=VK_TOKEN)
     vk_api = vk_session.get_api()
@@ -40,3 +48,7 @@ if __name__ == "__main__":
         except requests.exceptions.ConnectionError:
             logging.exception("VK_bot упал с ошибкой")
             sleep(120)
+
+
+if __name__ == "__main__":
+    main()
