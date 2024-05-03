@@ -33,7 +33,7 @@ if __name__ == '__main__':
         )
     
     
-    with open("questions.json", "r", encoding="utf-8") as file:
+    with open(env('PATH_TO_FILE'), "r", encoding="utf-8") as file:
         questions_json = file.read()
     questions = json.loads(questions_json)
     
