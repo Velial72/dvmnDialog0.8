@@ -42,10 +42,8 @@ def main():
             for event in longpoll.listen():
                 if event.type == VkEventType.MESSAGE_NEW and event.to_me:
                     serialized_answer = detect_intent_text(env('DIALOG_ID'), event.user_id, event.text)
-                    if serialized_answer['fallback'] == False:
+                    if not serialized_answer['fallback']:
                         send_answer(serialized_answer['answer'], event.user_id, vk_api)
-                    else:
-                        pass
         except requests.exceptions.ConnectionError:
             logging.exception("VK_bot упал с ошибкой")
             sleep(120)
