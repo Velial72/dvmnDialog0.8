@@ -3,10 +3,6 @@ from google.cloud import dialogflow
 from environs import Env
 
 
-env = Env()
-env.read_env()
-
-
 def create_intent(project_id, display_name, training_phrases_parts, message_texts):
     """Create an intent of the given intent type."""
 
@@ -34,6 +30,8 @@ def create_intent(project_id, display_name, training_phrases_parts, message_text
 
 
 def main():
+    env = Env()
+    env.read_env()
     with open(env('PATH_TO_FILE'), "r", encoding="utf-8") as file:
         questions_json = file.read()
     questions = json.loads(questions_json)
